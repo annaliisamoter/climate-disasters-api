@@ -3,7 +3,7 @@
 
 from jinja2 import StrictUndefined
 from flask import Flask, render_template, request, flash, redirect, session, jsonify
-from flask_debugtoolbar import DebugToolbarExtension
+from csv_parse import parses_csv
 import json
 import csv
 
@@ -14,13 +14,18 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/')
 def index():
     """Homepage."""
-    return render_template("index.html")
+    return render_template('/index.html')
 
 
-@app.route('/api-call'):
+
+@app.route('/api-call')
+def api_call():
     """handles logic for returning json with requested ranges of fema data"""
 #For Story 1, no form input will be handled.  Return total number of incidents per state
-    
+    incidents_by_state = parses_csv()
+    return jasonify(incidents_by_state)
+
+
 
 
 
