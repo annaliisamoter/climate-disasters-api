@@ -7,7 +7,7 @@ from csv_parse import parses_csv
 import json
 import csv
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='')
 app.secret_key = "ABC"
 app.jinja_env.undefined = StrictUndefined
 
@@ -21,9 +21,13 @@ def index():
 @app.route('/api-call')
 def api_call():
     """handles logic for returning json with requested ranges of fema data"""
-#For Story 1, no form input will be handled.  Return total number of incidents per state
+    #For Story 1, no form input will be handled.  Returns dictionary {state name: total number of incidents per state}
     incidents_by_state = parses_csv()
-    return jasonify(incidents_by_state)
+    print("api call is being made")
+    print(incidents_by_state)
+    
+
+    return jsonify(incidents_by_state)
 
 
 
@@ -36,5 +40,5 @@ def api_call():
 
 if __name__ == "__main__":
     app.debug = True
-    DebugToolbarExtension(app)
-    app.run(host="0.0.0.0") 
+    #DebugToolbarExtension(app)
+    app.run(host="0.0.0.0", port=5005)
