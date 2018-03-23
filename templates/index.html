@@ -2,10 +2,10 @@
 <html>
 <head>
 <meta charset=utf-8 />
-<title>Choropleth</title>
+<title>Climate Disasters</title>
 
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src='https://api.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.js'></script>
 <link href='https://api.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css' rel='stylesheet' />
 
@@ -18,11 +18,11 @@
 
 
 <div id='map'></div>
-
-<script src="./us-states.js"></script>
+<h1>hello!</h1>
+<script type=text/javascript src="./us-states.js"></script>
 
 <script>
-//put accessToken into environment as variable and access through os so it doesn't get checked in publically.
+//TO DO: put accessToken into environment as variable and access through os so it doesn't get checked in publically.
   mapboxgl.accessToken = 'pk.eyJ1IjoiY2Fwcmlwb3QiLCJhIjoiY2pjMDJqcDhsMDQ2MzJ4bW85MTR0YXBzYiJ9.Ag9mIZTDONNN9JdN2kW76g';
   var map = new mapboxgl.Map({
     container: 'map',
@@ -46,56 +46,72 @@
         }
     }
 
-    //ajax call to api, (ie incident number) data, iterate through statesData and map incident number onto density property.
+    
 
 
-    // look at mapbox's docs and see how addLayer function works.
+    //ajax call to api, then render map layers with new data as part of callback
+    $(document).ready(function(){
+      $.get('/api-call', function(data, status){
 
-    var statesLayer = map.addLayer({
-      'id': 'us-states',
-      'type': 'fill',
-      'source': {
-        type: 'geojson',
-        data: statesData
-      },
-      'paint': {
-        'fill-color': {
-          //change density to number of climate disaster incidents.  Logic for extracting data from csv needs to add all the incidents within input ranges (date, type)
-          //per state
-          property: 'density',
-          stops: [
-              [0, '#70F1FF'],
-              [10, '#56D7FF'],
-              [20, '#3DBEFF'],
-              [50, '#23A4FF'],
-              [100, '#0A8BE6'],
-              [200, '#0071CC'],
-              [500, '#0058B3'],
-              [1000, '#003E99']
-          ]
-        },
-        'fill-opacity': 0.75
+        window.theData = data;
+        console.log("Data coming back from api call: " + data + "\nStatus: " + status);
+       //function to take the data we got back from the api call and plug incidents number into statesData as new density property value
+        for (var i = 0; i < statesData['features'].length; i ++ ){
+          feature = statesData['features'][i];
+          // var stateName = feature['properties']['name']
+          var stateName = feature.properties.name;
+          feature.properties.numIncidents = data[stateName];
+        }
+
+        //putIntoStatesData(data);
+
+        var statesLayer = map.addLayer({
+          'id': 'us-states',
+          'type': 'fill',
+          'source': {
+            type: 'geojson',
+            data: statesData
+          },
+          'paint': {
+            'fill-color': {
+              //change density to number of climate disaster incidents.  Logic for extracting data from csv needs to add all the incidents within input ranges (date, type)
+              //per state
+              property: 'numIncidents',
+              stops: [
+                  [0, '#70F1FF'],
+                  [10, '#56D7FF'],
+                  [20, '#3DBEFF'],
+                  [50, '#23A4FF'],
+                  [100, '#0A8BE6'],
+                  [200, '#0071CC'],
+                  [500, '#0058B3'],
+                  [1000, '#003E99']
+              ]
+            },
+            'fill-opacity': 0.75
+          }
+        }, firstSymbolId);
+
+      });
+
+      map.on('click', 'us-states', function(e) {
+        var coordinates = almostFlatten(e.features[0].geometry.coordinates);
+        var bounds = new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]);
+        coordinates.forEach(function(coord) {
+          bounds.extend(coord);
+        })
+
+        map.fitBounds(bounds, { padding: 100 });
+      });
+
+
+      function almostFlatten(arr) {
+        return arr.reduce(function (flat, toFlatten) {
+          return flat.concat(Array.isArray(toFlatten[0]) ? almostFlatten(toFlatten) : [toFlatten]);
+        }, []);
       }
-    }, firstSymbolId);
-
+    });
   });
-
-  map.on('click', 'us-states', function(e) {
-    var coordinates = almostFlatten(e.features[0].geometry.coordinates);
-    var bounds = new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]);
-    coordinates.forEach(function(coord) {
-      bounds.extend(coord);
-    })
-
-    map.fitBounds(bounds, { padding: 100 });
-  });
-
-
-  function almostFlatten(arr) {
-    return arr.reduce(function (flat, toFlatten) {
-      return flat.concat(Array.isArray(toFlatten[0]) ? almostFlatten(toFlatten) : [toFlatten]);
-    }, []);
-  }
 </script>
 
 
