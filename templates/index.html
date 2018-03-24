@@ -86,8 +86,7 @@
         }
     }
 
-    //defines data to be passed to server through ajax .get call
-    //var formInputs = $(#inputs).serializeArray();
+    
     //ajax call to api, then render map layers with new data as part of callback
     $('#submit').on('click', function(){
       window.theInputs = $('#inputs');      
@@ -97,10 +96,9 @@
         
         window.theData = data;
         console.log("Data coming back from api call: " + data + "\nStatus: " + status);
-       //function to take the data we got back from the api call and plug incidents number into statesData as new density property value
+       //function to take the data we got back from the api call and plug incidents number into statesData as new property called numIncidents
         for (var i = 0; i < statesData['features'].length; i ++ ){
           feature = statesData['features'][i];
-          // var stateName = feature['properties']['name']
           var stateName = feature.properties.name;
           feature.properties.numIncidents = data[stateName];
         }
@@ -114,18 +112,21 @@
           },
           'paint': {
             'fill-color': {
-              //change density to number of climate disaster incidents.  Logic for extracting data from csv needs to add all the incidents within input ranges (date, type)
-              //per state
               property: 'numIncidents',
               stops: [
-                  [0, '#70F1FF'],
+                  [0, '#F3FFFF'],
                   [10, '#56D7FF'],
                   [20, '#3DBEFF'],
-                  [50, '#23A4FF'],
-                  [100, '#0A8BE6'],
-                  [200, '#0071CC'],
-                  [500, '#0058B3'],
-                  [1000, '#003E99']
+                  [30, '#23A4FF'],
+                  [40, '#0A8BE6'],
+                  [50, '#0071CC'],
+                  [75, '#0058B3'],
+                  [100, '#003E99'],
+                  [200, '#290099'],
+                  [300, '#5C0099'],
+                  [400, '#8F0099'],
+                  [500, '#990057'],
+                  [1000, '#990024']
               ]
             },
             'fill-opacity': 0.75
