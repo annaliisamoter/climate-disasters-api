@@ -6,12 +6,20 @@
 
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src='https://api.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.js'></script>
 <link href='https://api.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css' rel='stylesheet' />
 
 <style>
   body { margin:0; padding:0; }
+  .inputDiv {
+  background-color: 'lightblue';
+  }
+  .formDiv {
+  margin-bottom: 100px;
+  margin-right: 150px;
+  margin-left: 80px;  
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  }
   #map { position:absolute; top:240; bottom:0; width:100%; }
   .legend {
     background-color: #fff;
@@ -42,8 +50,7 @@
 <body>
 
 <div id="inputDiv" class="row" style="background-color:lightblue">
-  <div class="col-xs-2"></div>
-  <div class="col-xs-8">
+  <div class="formDiv">
     <br>
     <h2>Welcome to the Climate Disaster Interface!</h2>
     <h3> Here you can visualize the frequency of different types of natural disasters, as tracked by FEMA, between 1953 and 2018.</h3>
