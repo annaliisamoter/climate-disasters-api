@@ -6,6 +6,7 @@
 
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src='https://api.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.js'></script>
 <link href='https://api.mapbox.com/mapbox-gl-js/v0.42.0/mapbox-gl.css' rel='stylesheet' />
 
@@ -16,18 +17,18 @@
 </head>
 <body>
 
-<div id="inputs" class="row" style="background-color:lightblue">
+<div id="inputDiv" class="row" style="background-color:lightblue">
   <div class="col-xs-2"></div>
   <div class="col-xs-8">
     <br>
     <h2>Welcome to the Climate Disaster Interface!</h2>
     <h3> Here you can visualize the frequency of different types of natural disasters, as tracked by FEMA, between 1953 and 2018.</h3>
     <h4>Choose a date range, in years, by which to filter the data, as well the type of disaster.</h4>
-    <form name="inputs" method="POST">
+    <form name="inputs" id="inputs">
       <label for="begin-year">Beginning range</label>
-      <input type="number" id="begin-range" name="begin-range" min="1953" max="2018" placeholder="1953" required>
-      <input type="number" id="end-range" name="end-range" min="1953" max="2018"placeholder="2018" required>
-      <select name="type-of-disaster">
+      <input type="number" id="begin" name="begin" min="1953" max="2018" placeholder="1953" required>
+      <input type="number" id="end" name="end" min="1953" max="2018"placeholder="2018" required>
+      <select name="type-of-disaster" id="type-of-disaster">
         <option value="Chemical">Chemical</option>
         <option value="Coastal Storm">Coastal Storm</option>
         <option value="Dam/Levee Break">Dam/Levee Break</option>
@@ -50,7 +51,7 @@
         <option value="Typhoon">Typhoon</option>
         <option value="Volcano">Volcano</option>
       </select>
-      <input id="submit" type="submit" value="Submit">
+      <input id="submit" type="button" value="Submit">
     </form>
    <br><br><br>
   </div>
@@ -85,13 +86,15 @@
         }
     }
 
-    
-
-
+    //defines data to be passed to server through ajax .get call
+    //var formInputs = $(#inputs).serializeArray();
     //ajax call to api, then render map layers with new data as part of callback
-    $(document).ready(function(){
-      $.get('/api-call', function(data, status){
+    $('#submit').on('click', function(){
+      window.theInputs = $('#inputs');      
+      console.log( $('#inputs').serializeArray() );
 
+      $.get('/api-call?' + $.param($('#inputs').serializeArray()), function(data, status){
+        
         window.theData = data;
         console.log("Data coming back from api call: " + data + "\nStatus: " + status);
        //function to take the data we got back from the api call and plug incidents number into statesData as new density property value
@@ -101,8 +104,6 @@
           var stateName = feature.properties.name;
           feature.properties.numIncidents = data[stateName];
         }
-
-        //putIntoStatesData(data);
 
         var statesLayer = map.addLayer({
           'id': 'us-states',
