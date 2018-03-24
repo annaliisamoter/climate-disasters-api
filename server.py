@@ -19,17 +19,16 @@ def index():
 
 @app.route('/api-call')
 def api_call():
-    """handles logic for returning json with requested ranges of fema data"""
-    #For Story 1, no form input will be handled.  Returns dictionary {state name: total number of incidents per state}
-    #story 2, handle inputs from the form
+    """handles logic for returning json with requested filtering ranges of fema data"""
+
     inputs = request.args
     print("these are the unparsed inputs: ", inputs)
     begin_range = inputs['begin']
     end_range = inputs['end']
     disaster_type = inputs['type-of-disaster']
-    
     print("These are the begin_range, end_range and disaster_type", begin_range, end_range, disaster_type)
-    incidents_by_state = parses_csv()
+    
+    incidents_by_state = parses_csv(begin_range, end_range, disaster_type)
     print("api call is being made")
     print(incidents_by_state)
     
