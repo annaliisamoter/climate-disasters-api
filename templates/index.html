@@ -69,7 +69,7 @@
     maxZoom: 5.5,
     minZoom: 1.8,
     style: 'mapbox://styles/mapbox/light-v9',
-    center: [-115.36957574368233, 50.732480262447524],
+    center: [-115.00, 42.00],//[-115.36957574368233, 50.732480262447524],
     zoom: 2.850019725398168
   });
 
@@ -85,25 +85,7 @@
             break;
         }
     }
-
-    
-    //ajax call to api, then render map layers with new data as part of callback
-    $('#submit').on('click', function(){
-      window.theInputs = $('#inputs');      
-      console.log( $('#inputs').serializeArray() );
-
-      $.get('/api-call?' + $.param($('#inputs').serializeArray()), function(data, status){
-        
-        window.theData = data;
-        console.log("Data coming back from api call: " + data + "\nStatus: " + status);
-       //function to take the data we got back from the api call and plug incidents number into statesData as new property called numIncidents
-        for (var i = 0; i < statesData['features'].length; i ++ ){
-          feature = statesData['features'][i];
-          var stateName = feature.properties.name;
-          feature.properties.numIncidents = data[stateName];
-        }
-
-        var statesLayer = map.addLayer({
+    var statesLayer = map.addLayer({
           'id': 'us-states',
           'type': 'fill',
           'source': {
@@ -132,27 +114,35 @@
             'fill-opacity': 0.75
           }
         }, firstSymbolId);
+    })
+  //ajax call to api, then render map layers with new data as part of callback
+  $('#submit').on('click', function(){
+    window.theInputs = $('#inputs');      
+    console.log( $('#inputs').serializeArray() );
 
-      });
-
-      map.on('click', 'us-states', function(e) {
-        var coordinates = almostFlatten(e.features[0].geometry.coordinates);
-        var bounds = new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]);
-        coordinates.forEach(function(coord) {
-          bounds.extend(coord);
-        })
-
-        map.fitBounds(bounds, { padding: 100 });
-      });
-
-
-      function almostFlatten(arr) {
-        return arr.reduce(function (flat, toFlatten) {
-          return flat.concat(Array.isArray(toFlatten[0]) ? almostFlatten(toFlatten) : [toFlatten]);
-        }, []);
+    $.get('/api-call?' + $.param($('#inputs').serializeArray()), function(data, status){
+      
+      window.theData = data;
+      console.log("Data coming back from api call: " + data + "\nStatus: " + status);
+      //function to take the data we got back from the api call and plug incidents number into statesData as new property called numIncidents
+      for (var i = 0; i < statesData['features'].length; i ++ ){
+        feature = statesData['features'][i];
+        var stateName = feature.properties.name;
+        feature.properties.numIncidents = data[stateName];
       }
+      map.getSource("us-states").setData(statesData);
+      //adds color coded layers based on numIncidents by rerendering map
+      
+
     });
-  });
+
+    //function almostFlatten(arr) {
+      //return arr.reduce(function (flat, toFlatten) {
+        //return flat.concat(Array.isArray(toFlatten[0]) ? almostFlatten(toFlatten) : [toFlatten]);
+      //}, []);
+      //}
+   }); 
+ 
 </script>
 
 
