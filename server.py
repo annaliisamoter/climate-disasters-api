@@ -2,14 +2,14 @@
     return as usable json for rendering map"""
 
 from jinja2 import StrictUndefined
-from flask import Flask, render_template, request, flash, redirect, session, jsonify
+from flask import Flask, render_template, request, flash, redirect, jsonify
 from csv_parse import parses_csv
-import json
-import csv
+
 
 app = Flask(__name__, static_folder='static', static_url_path='')
 app.secret_key = "ABC"
 app.jinja_env.undefined = StrictUndefined
+
 
 @app.route('/')
 def index():
@@ -17,11 +17,18 @@ def index():
     return render_template('/index.html')
 
 
-
 @app.route('/api-call')
 def api_call():
     """handles logic for returning json with requested ranges of fema data"""
     #For Story 1, no form input will be handled.  Returns dictionary {state name: total number of incidents per state}
+    #story 2, handle inputs from the form
+    inputs = request.args
+    print("these are the unparsed inputs: ", inputs)
+    begin_range = inputs['begin']
+    end_range = inputs['end']
+    disaster_type = inputs['type-of-disaster']
+    
+    print("These are the begin_range, end_range and disaster_type", begin_range, end_range, disaster_type)
     incidents_by_state = parses_csv()
     print("api call is being made")
     print(incidents_by_state)
