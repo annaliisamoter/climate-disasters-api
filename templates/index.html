@@ -56,7 +56,7 @@
     <h3> Here you can visualize the frequency of different types of natural disasters, as tracked by FEMA, between 1953 and 2018.</h3>
     <h4>Choose a date range, in years, by which to filter the data, as well the type of disaster.</h4>
     <form name="inputs" id="inputs">
-      <label for="begin-year">Beginning range</label>
+      <label for="begin-year">Year range</label>
       <input type="number" id="begin" name="begin" min="1953" max="2018" value="1953">
       <input type="number" id="end" name="end" min="1953" max="2018" value="2018" required>
       <select name="type-of-disaster" id="type-of-disaster">
@@ -91,7 +91,7 @@
 <div id="map" style="width: 800; height: 540px;" align="justify"></div>
 <div id='state-legend' class='legend'>
     <h4>Climate Incidents per state</h4>
-    <div><span style='background-color: #990024'></span>1000+</div>
+    <div><span style='background-color: #ff1e56'></span>1000+</div>
     <div><span style='background-color: #990057'></span>500-999</div>
     <div><span style='background-color: #8F0099'></span>400-499</div>
     <div><span style='background-color: #5C0099'></span>300-399</div>
@@ -157,7 +157,7 @@
                   [300, '#5C0099'],
                   [400, '#8F0099'],
                   [500, '#990057'],
-                  [1000, '#990024']
+                  [1000, '#ff1e56']
               ]
             },
             'fill-opacity': 0.75
@@ -167,14 +167,10 @@
 
   //ajax call to api, then rerender map with layers based on new data as part of callback
   $('#submit').on('click', function(){
-    // window.theInputs = $('#inputs');      
-    // console.log( $('#inputs').serializeArray() );
 
     $.get('/api-call?' + $.param($('#inputs').serializeArray()), function(data, status){
-      
-      //window.theData = data;
-      console.log("Data coming back from api call: " + data + "\nStatus: " + status);
-      //function to take the data we got back from the api call and plug incidents number into statesData as new property called numIncidents
+    
+      //takes the data we got back from the api call and plug incidents number into statesData as new property called numIncidents
       for (var i = 0; i < statesData['features'].length; i ++ ){
         feature = statesData['features'][i];
         var stateName = feature.properties.name;
