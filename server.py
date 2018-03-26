@@ -1,14 +1,12 @@
 """serves simple flask app and api logic for extracting fema data from csv file to
     return as usable json."""
 
-#from jinja2 import StrictUndefined
 from flask import Flask, render_template, request, jsonify
 from csv_parse import parses_csv
 
 
 app = Flask(__name__, static_folder='static', static_url_path='')
 app.secret_key = "ABC"
-#app.jinja_env.undefined = StrictUndefined
 
 
 @app.route('/')

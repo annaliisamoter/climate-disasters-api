@@ -10,7 +10,7 @@ This project consists of building two small services:
  - An web app interface using this API to present the data distributed over time and location
 
 ## Tech Stack Used
-- Python and Flask, CSS, HtML, JQuery and JavaScript.  Mapbox api for map rendering.  Heroku to deploy. 
+- Python and Flask, CSS, HtML, JQuery and JavaScript.  Mapbox api for map rendering.  Unittest for testing. Heroku to deploy. 
 
 ## Features
 - Allows user to filter FEMA data by year and disaster type, visualizing the number of incidents by state through a mapbox map with color coded layering.
