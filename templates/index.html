@@ -44,50 +44,48 @@
       margin-right: 5px;
       width: 10px;
   }
-
+ 
 </style>
 </head>
 <body>
-
-<div id="inputDiv" class="row" style="background-color:lightblue">
-  <div class="formDiv">
-    <br>
-    <h2>Welcome to the Climate Disaster Interface!</h2>
-    <h3> Here you can visualize the frequency of different types of natural disasters, as tracked by FEMA, between 1953 and 2018.</h3>
-    <h4>Choose a date range, in years, by which to filter the data, as well the type of disaster.</h4>
-    <form name="inputs" id="inputs">
-      <label for="begin-year">Year range</label>
-      <input type="number" id="begin" name="begin" min="1953" max="2018" value="1953">
-      <input type="number" id="end" name="end" min="1953" max="2018" value="2018" required>
-      <select name="type-of-disaster" id="type-of-disaster">
-        <option value="Chemical">Chemical</option>
-        <option value="Coastal Storm">Coastal Storm</option>
-        <option value="Dam/Levee Break">Dam/Levee Break</option>
-        <option value="Drought">Drought</option>
-        <option value="Earthquake">Earthquake</option>
-        <option value="Fire">Fire</option>
-        <option value="Fishing Losses">Fishing Losses</option>
-        <option value="Flood">Flood</option>
-        <option value="Freezing">Freezing</option>
-        <option value="Human Cause">Human Cause</option>
-        <option value="Hurricane">Hurricane</option>
-        <option value="Mud/Landslide">Mud/Landslide</option>
-        <option value="Other">Other</option>
-        <option value="Severe Ice Storm">Severe Ice Storm</option>
-        <option value="Severe Storm(s)">Severe Storm(s)</option>
-        <option value="Snow">Snow</option>
-        <option value="Tornado">Tornado</option>
-        <option value="Toxic Substances">Toxic Substances</option>
-        <option value="Tsunami">Tsunami</option>
-        <option value="Typhoon">Typhoon</option>
-        <option value="Volcano">Volcano</option>
-      </select>
-      <input id="submit" type="button" value="Submit">
-    </form>
-   <br><br><br>
+  <div id="inputDiv" class="landing" style="background-color:lightblue">
+    <div class="formDiv">
+      <br>
+      <h2>Welcome to the Climate Disaster Interface!</h2>
+      <h3> Here you can visualize the frequency of different types of natural disasters, as tracked by FEMA, between 1953 and 2018.</h3>
+      <h4>Choose a date range, in years, by which to filter the data, as well the type of disaster.</h4>
+      <form name="inputs" id="inputs">
+        <label for="begin-year">Year range</label>
+        <input type="number" id="begin" name="begin" min="1953" max="2018" value="1953">
+        <input type="number" id="end" name="end" min="1953" max="2018" value="2018" required>
+        <select name="type-of-disaster" id="type-of-disaster">
+          <option value="Chemical">Chemical</option>
+          <option value="Coastal Storm">Coastal Storm</option>
+          <option value="Dam/Levee Break">Dam/Levee Break</option>
+          <option value="Drought">Drought</option>
+          <option value="Earthquake">Earthquake</option>
+          <option value="Fire">Fire</option>
+          <option value="Fishing Losses">Fishing Losses</option>
+          <option value="Flood">Flood</option>
+          <option value="Freezing">Freezing</option>
+          <option value="Human Cause">Human Cause</option>
+          <option value="Hurricane">Hurricane</option>
+          <option value="Mud/Landslide">Mud/Landslide</option>
+          <option value="Other">Other</option>
+          <option value="Severe Ice Storm">Severe Ice Storm</option>
+          <option value="Severe Storm(s)">Severe Storm(s)</option>
+          <option value="Snow">Snow</option>
+          <option value="Tornado">Tornado</option>
+          <option value="Toxic Substances">Toxic Substances</option>
+          <option value="Tsunami">Tsunami</option>
+          <option value="Typhoon">Typhoon</option>
+          <option value="Volcano">Volcano</option>
+        </select>
+        <input id="submit" type="button" value="Submit">
+      </form>
+     <br><br><br>
+    </div>
   </div>
-  <div class="col-xs-2"></div>
-</div>
 <div id="map" style="width: 800; height: 540px;" align="justify"></div>
 <div id='state-legend' class='legend'>
     <h4>Climate Incidents per state</h4>
