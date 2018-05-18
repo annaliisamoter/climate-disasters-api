@@ -28,7 +28,6 @@ def api_call():
 
 
 if __name__ == "__main__":
-    app.debug = True
-    #DebugToolbarExtension(app)
+    app.debug = False
     TEMPLATES_AUTO_RELOAD = True
     app.run(host="0.0.0.0", port=5005)
